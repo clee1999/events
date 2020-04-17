@@ -35,33 +35,59 @@ class EventsController extends AppController {
 
 
     public function edit($id){
-        // on recupere les donnee liee à l'id
+        $u = $this->Auth->user();
         $e = $this->Events->find()->where(['id' => $id]);
 
-
-        // si l'ensemble de resultat est vide, on redirige
         if($e->isEmpty()){
             $this->Flash->error('event introuvable ');
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect(['controller' => 'Events', 'action' => 'index']);
         }
 
-        //on passe le premier élément de l'ensemble dans la vue
         $firstElement = $e->first();
+        if($firstElement->user_id !== $u['id']) {
+            $this->Flash->error('Vous ne pouvez pas modifier ceci ');
+            return $this->redirect(['controller' => 'Events', 'action' => 'index']);
+        } else {
+            $this->set('e', $firstElement);
 
-        $this->set('elmt', $firstElement);
+            if($this->request->is(['post','put'])){
+                $this->Events->patchEntity($firstElement, $this->request->getData());
 
-        //si on a reçu le formulaire de modidif (aka si on est ne post ou put)
-        if($this->request->is(['post','put'])){
-            $this->Events->patchEntity($firstElement, $this->request->getData());
+                if($this->Events->save($firstElement)) {
+                    $this->Flash->success('Modification ok');
+                    return $this->redirect(['action' => 'view', $id]);
+                }
+                $this->Flash->error('erreur, ça n a pas fonctionné');
 
-            if($this->Events->save($firstElement)) {
-                $this->Flash->success('Modification ok');
-                return $this->redirect(['action' => 'view', $id]);
             }
-            $this->Flash->error('erreur, ça n a pas fonctionné');
+        }
 
+
+
+    }
+
+
+    public function delete($id){
+        $u = $this->Auth->user();
+        $this->request->allowMethod(['post', 'delete']);
+
+        $d = $this->Events->get($id);
+
+        if($u['id'] == $d->user_id) {
+            if ($this->Events->delete($d)){
+                $this->Flash->success('OK,votre event a été supprimé');
+                return $this->redirect(['controller' => 'Events', 'action' => 'index']);
+            }
+            $this->Flash->error('Erreur, ça n\'a pas fonctionné. Réessayez.');
+            return $this->redirect(['controller' => 'Events', 'action' => 'view', $id]);
+        } else {
+            $this->Flash->error('Vous ne pouvez pas modifier ceci ');
+            return $this->redirect(['controller' => 'Events', 'action' => 'index']);
         }
     }
+
+
+
 
 
 

@@ -1,5 +1,5 @@
 <h1>Editer votre événement</h1>
-<?= $this->Form->create($elmt) ?>
+<?= $this->Form->create($e) ?>
 <?= $this->Form->control('title') ?>
 <?= $this->Form->control('description', ['label' => 'description']) ?>
 <?= $this->Form->control('location', ['label' => 'location']) ?>

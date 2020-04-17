@@ -11,6 +11,8 @@ class EventsTable extends Table {
     {
         $this->addBehavior('Timestamp');
 
+      //  $this->addBehavior('Picture');
+
         $this->belongsTo('Users',['foreignKey' => 'user_id', 'joinType' => 'inner']);
 
         $this->hasMany('Guests', ['foreignKey' => 'event_id','user_id', 'dependent' => true, 'cascadeCallbacks' => true]);

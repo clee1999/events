@@ -13,6 +13,7 @@
     <?php } else { ?>
 
         <p><?= $this->Html->link('Modifier', ['action' => 'edit', $e->id])?></p>
+        <p><?= $this->Html->link('Supprimer ', ['action' => 'delete', $e->id])?></p>
 
     <?php }  ?>
 

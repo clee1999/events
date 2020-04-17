@@ -11,7 +11,7 @@ class UsersTable extends Table {
     {
         $this->addBehavior('Timestamp');
 
-       // $this->addBehavior('Avatar');
+     //   $this->addBehavior('Avatar');
 
         $this->hasMany('Events', ['foreignKey' => 'user_id', 'dependent' => true, 'cascadeCallbacks' => true]);
 
