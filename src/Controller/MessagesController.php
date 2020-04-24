@@ -5,37 +5,48 @@ namespace App\Controller;
 class MessagesController extends AppController {
 
     public function index(){
-        $messages = $this->Messages->find();
+        $messages = $this->Messages->find()->contain(['Sender', 'Receiver'])->where(['Messages.sender_id' => $this->Auth->user('id')])
+            ->order(['Messages.created' => 'DESC']);
         $this->set('messages', $messages);
     }
 
+
+
     public function viewmessages(){
-        $message = $this->Messages->find();
-        $this->set(compact('message'));
+       $message = $this->Messages->find()->contain(['Sender', 'Receiver'])->where(['Messages.receiver_id' => $this->Auth->user('id')])
+           ->orwhere(['Messages.sender_id' => $this->Auth->user('id')])
+         ->order(['Messages.created' => 'ASC']);
+       $this->set('message', $message);
+
+        //display sender's message
+        $sender = $this->Messages->Sender->find()
+            ->order(['Sender.created' => 'ASC']);
+        $this->set('sender', $sender);
+        //display reveiver's message
+        $receiver = $this->Messages->Receiver->find()->order(['receiver.created' => 'ASC']);
+        $this->set('reveiver', $receiver);
 
     }
 
-    public function new()
-    {
-        $n = $this->Messages->newEntity();
-        if ($this->request->is('post')) {
-            $n = $this->Messages->patchEntity($n, $this->request->getData());
-            $u = $this->Auth->user();
-            $n->user_id = $u['id'];
-            if ($this->Messages->save($n)) {
-                $this->Flash->success('Message envoyé');
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error('Erreur, messsage non envoyé');
-        }
+    public function new($c_id){
+        if($this->request->is('post')){
+            //on créer une entité vide
+            $new = $this->Messages->newEntity();
+            $new = $this->Messages->patchEntity($new,$this->request->getData());
 
-        if ($this->request->is('post')) {
-            $this->request->data['Message']['sender_id'] = $this->Auth->user('id');
-            if ($this->Message->save($this->request->data)) {
-                $this->Session->setFlash('Message successfully sent.');
-                $this->redirect(array('action' => 'outbox'));
-            }
-        }
+            //on rajoute l'id du message (qui n'était pas contenu dans le formulaire)
+            $new->sender_id = $c_id;
+
+            //on essaie de sauvegarder
+            if ($this->Messages->save($new)){
+                //on cree un message de succes
+                $this->Flash->success('Message envoyé');
+            } else
+                $this->Flash->error('erreur, ça n a pas fonctionné');
+
+        }else
+        return $this->redirect(['controller' =>'Messages',  'action' => 'viewmessages', $c_id]);
+
     }
 
 

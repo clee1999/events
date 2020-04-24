@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use Cake\I18n\Time;
 
 class EventsController extends AppController {
 
@@ -78,21 +79,36 @@ class EventsController extends AppController {
         }
     }
 
-
-
-
-
-
-
-
     public function view($id){
+        //tous les events
        $e = $this->Events->get($id , ['contain' => ['Users', 'Guests.Users']]);
-
         $this->set(compact('e'));
+
     }
 
     public function index(){
+        $time = Time::now();
+        // afficher tous les events
         $list = $this->Events->find()->contain(['Users'])->order(['beginning' => 'DESC']);
-       $this->set(compact('list'));
+        $this ->set('list', $list);
+
+        //les events à venir
+        $eventnext = $this->Events->find()->contain(['Users'])->where([
+            'beginning BETWEEN :start AND :end'
+        ])->bind(':start', $time, 'date')->bind(':end', '2032-10-31', 'date')->order(['beginning' => 'DESC']);;
+        $this ->set('eventnext', $eventnext);
+
+        //les events passé
+        $eventprev = $this->Events->find()->contain(['Users'])->where([
+            'beginning BETWEEN :start AND :end'
+        ])->bind(':start', '2000-05-31', 'date')->bind(':end', $time, 'date')->order(['beginning' => 'DESC']);;
+        $this ->set('eventprev', $eventprev);
+
+        //users who create the most events
+        $eventcreatemost = $this->Events->find()->contain(['Users']);
+        $this ->set('eventcreatemost', $eventcreatemost);
+
+        //users who were the most invite
+
     }
 }

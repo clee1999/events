@@ -15,7 +15,7 @@
                             <div class="chat_people">
                                 <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
                                 <div class="chat_ib">
-                                    <h5><?= $m->sender_id ?> <span class="chat_date"><?= $m->created ?></span></h5>
+                                    <h5><?= $m->Receiver->pseudo ?> <span class="chat_date"><?= $m->created ?></span></h5>
                                     <p><?= $m->content ?></p>
                                     <p class="open"><?= $this->Html->link('Open', ['action' => 'viewmessages', $m->id])?></p>
                                 </div>

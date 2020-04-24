@@ -10,7 +10,7 @@ class UsersController extends AppController {
     }
 
     public function viewuser($id){
-        $user = $this->Users->get($id, ['contain' => ['Events', 'Guests', 'Guests.Events']]); // ne pas oublier d'ajouter le contain events à la suite de cette ligne
+        $user = $this->Users->get($id, ['contain' => ['Events', 'Guests.Events']]); // ne pas oublier d'ajouter le contain events à la suite de cette ligne
         $this->set(compact('user'));
     }
 

@@ -16,6 +16,7 @@ class UsersTable extends Table {
         $this->hasMany('Events', ['foreignKey' => 'user_id', 'dependent' => true, 'cascadeCallbacks' => true]);
 
         $this->hasMany('Guests', ['foreignKey' => 'user_id', 'dependent' => true, 'cascadeCallbacks' => true]);
+        $this->hasMany('Messages');
 
 
     }
