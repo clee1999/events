@@ -11,7 +11,9 @@ class MessagesTable extends Table {
     {
         // Permet que l'app gère toute seule les champs created et modified
         $this->addBehavior('Timestamp');
-
+        $this->belongsTo('Events',['joinType' => 'inner']);
+        $this->belongsTo('Users',[ 'joinType' => 'inner']);
+        $this->belongsTo('Guests',[ 'joinType' => 'inner']);
 
     }
 

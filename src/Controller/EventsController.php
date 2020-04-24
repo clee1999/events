@@ -37,12 +37,10 @@ class EventsController extends AppController {
     public function edit($id){
         $u = $this->Auth->user();
         $e = $this->Events->find()->where(['id' => $id]);
-
         if($e->isEmpty()){
             $this->Flash->error('event introuvable ');
             return $this->redirect(['controller' => 'Events', 'action' => 'index']);
         }
-
         $firstElement = $e->first();
         if($firstElement->user_id !== $u['id']) {
             $this->Flash->error('Vous ne pouvez pas modifier ceci ');
@@ -58,33 +56,29 @@ class EventsController extends AppController {
                     return $this->redirect(['action' => 'view', $id]);
                 }
                 $this->Flash->error('erreur, ça n a pas fonctionné');
-
             }
         }
-
-
-
     }
 
 
     public function delete($id){
         $u = $this->Auth->user();
-        $this->request->allowMethod(['post', 'delete']);
-
+        $this->request->allowMethod(['delete', 'post']);
         $d = $this->Events->get($id);
-
         if($u['id'] == $d->user_id) {
             if ($this->Events->delete($d)){
                 $this->Flash->success('OK,votre event a été supprimé');
-                return $this->redirect(['controller' => 'Events', 'action' => 'index']);
+                return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error('Erreur, ça n\'a pas fonctionné. Réessayez.');
             return $this->redirect(['controller' => 'Events', 'action' => 'view', $id]);
         } else {
             $this->Flash->error('Vous ne pouvez pas modifier ceci ');
-            return $this->redirect(['controller' => 'Events', 'action' => 'index']);
+            return $this->redirect(['action' => 'view', $id]);
         }
     }
+
+
 
 
 

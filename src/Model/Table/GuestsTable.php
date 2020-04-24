@@ -26,4 +26,5 @@ class GuestsTable extends Table {
 
 
 
+
 }

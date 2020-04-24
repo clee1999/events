@@ -24,6 +24,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <?= $cakeDescription ?>:
         <?= $this->fetch('title') ?>
     </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <?= $this->Html->meta('icon') ?>
 
     <?= $this->Html->css('bootstrap.min.css') ?>
@@ -38,28 +39,68 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->script('bootstrap.min') ?>
 </head>
 <body>
-<nav class="top-bar expanded" data-topbar role="navigation">
-    <?php
-    //si on est non-connecté
-    if(!$Auth->user()) { ?>
-        <?= $this->Html->link('Se connecter', ['controller' => 'Users', 'action' => 'login']) ?>
-        <?= $this->Html->link('Créer un compte', ['controller' => 'Users', 'action' => 'new']) ?>
-        <?= $this->Html->link('Evénements', ['controller' => 'Events', 'action' => 'index']) ?>
-    <?php } else { ?>
-        <?= $this->Html->link('Evénements', ['controller' => 'Events', 'action' => 'index'], ['class' => ($this->templatePath == 'Events' && $this->template == 'index') ? 'active' : ''])  ?>
-        <?= $this->Html->link('Ajouter event', ['controller' => 'Events', 'action' => 'new'], ['class' => ($this->templatePath == 'Events' && $this->template == 'new') ? 'active' : ''])  ?>
-        <?= $this->Html->link('Inviter', ['controller' => 'Guests', 'action' => 'invite'], ['class' => ($this->templatePath == 'Guests' && $this->template == 'invite') ? 'active' : ''])  ?>
 
-        <?= $this->Html->link('Mes messages', ['controller' => 'Messages', 'action' => 'index'], ['class' => ($this->templatePath == 'Messages' && $this->template == 'index') ? 'active' : ''])  ?>
+<nav class="navbar navbar-expand-lg navbar navbar-light" style="background-color: #e3f2fd;">
+    <a class="navbar-brand" href="#">EventsWorld</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <?= $this->Html->link('Liste des membres', ['controller' => 'Users', 'action' => 'index'], ['class' => ($this->templatePath == 'Users' && $this->template == 'index') ? 'active' : ''])  ?>
-        <?= $this->Html->link('Modifier votre compte', ['controller' => 'Users', 'action' => 'edit'], ['class' => ($this->templatePath == 'Users' && $this->template == 'edit') ? 'active' : ''])  ?>
-        <?= $this->Html->link('Edit avatar', ['controller' => 'Users', 'action' => 'editavatar'], ['class' => ($this->templatePath == 'Users' && $this->template == 'editavatar') ? 'active' : '']) ?>
-        <?= $this->Html->link('Se déconnecter', ['controller' => 'Users', 'action' => 'logout']) ?>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <?php
+            if(!$Auth->user()) { ?>
+                <li class="nav-item">
+                    <?= $this->Html->link('Se connecter', ['controller' => 'Users', 'action' => 'login']) ?>
+                </li>
+                <li class="nav-item">
+                    <?= $this->Html->link('Créer un compte', ['controller' => 'Users', 'action' => 'new']) ?>
+                </li>
+                <li class="nav-item">
+                    <?= $this->Html->link('Evénements', ['controller' => 'Events', 'action' => 'index']) ?>
+                </li>
+            <?php } else { ?>
+                <li class="nav-item">
+                    <?= $this->Html->link('Evénements', ['controller' => 'Events', 'action' => 'index'], ['class' => ($this->templatePath == 'Events' && $this->template == 'index') ? 'active' : ''])  ?>
+                </li>
+                <li class="nav-item">
+                    <?= $this->Html->link('Ajouter event', ['controller' => 'Events', 'action' => 'new'], ['class' => ($this->templatePath == 'Events' && $this->template == 'new') ? 'active' : ''])  ?>
+                </li>
+                <li class="nav-item">
+                    <?= $this->Html->link('Inviter', ['controller' => 'Guests', 'action' => 'invite'], ['class' => ($this->templatePath == 'Guests' && $this->template == 'invite') ? 'active' : ''])  ?>
+                </li>
+                <li class="nav-item">
+                    <?= $this->Html->link('Mes messages', ['controller' => 'Messages', 'action' => 'index'], ['class' => ($this->templatePath == 'Messages' && $this->template == 'index') ? 'active' : ''])  ?>
+                </li>
+            <li class="nav-item">
+                <?= $this->Html->link('Liste des membres', ['controller' => 'Users', 'action' => 'index'], ['class' => ($this->templatePath == 'Users' && $this->template == 'index') ? 'active' : ''])  ?>
+            </li>
 
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <ul class="navbar-nav" >
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Mon compte
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                 <div  class="dropdown-item">                    <?= $this->Html->link('Modifier votre compte', ['controller' => 'Users', 'action' => 'edit'], ['class' => ($this->templatePath == 'Users' && $this->template == 'edit') ? 'active' : ''])  ?>
+                 </div>
+                    <div  class="dropdown-item">
+                        <?= $this->Html->link('Edit avatar', ['controller' => 'Users', 'action' => 'editavatar'], ['class' => ($this->templatePath == 'Users' && $this->template == 'editavatar') ? 'active' : '']) ?>
 
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div  class="dropdown-item">
+                        <?= $this->Html->link('Se déconnecter', ['controller' => 'Users', 'action' => 'logout']) ?>
 
-    <?php }  ?>
+                    </div>
+                </div>
+            </li>
+            </ul>
+        </form>
+        <?php }  ?>
+    </div>
 </nav>
     <?= $this->Flash->render() ?>
     <div class="container clearfix">
@@ -68,4 +109,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <footer>
     </footer>
 </body>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </html>

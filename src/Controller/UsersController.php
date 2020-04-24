@@ -69,7 +69,7 @@ class UsersController extends AppController {
         }
     }
 
-    public function delete($id){
+    public function delete(){
         $u = $this->Auth->user();
         $this->request->allowMethod(['delete','post']);
         $d = $this->Users->get($u['id']);
